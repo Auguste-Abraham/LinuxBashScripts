@@ -1,0 +1,24 @@
+###script that will zip all 0 kb files, send them to a remote machine and change their names
+upon being received on the remote end. 
+
+
+#!/bin/bash
+
+# Zip all 0 KB files in /root directory
+zip /root/zero_files.zip $(find /root -maxdepth 1 -type f -size 0)
+
+# Send the zip file to the remote machine using scp
+scp /root/zero_files.zip user@remote:/path/to/destination/
+
+# Connect to the remote machine and change the names of the files
+ssh user@remote << EOF
+cd /path/to/destination
+unzip zero_files.zip
+i=1
+for file in $(ls *.txt); do
+  mv $file zero_file_$i.txt
+  i=$((i+1))
+done
+EOF
+
+echo "0 KB files zipped, sent to a remote machine, and their names changed upon being received on the remote end."
