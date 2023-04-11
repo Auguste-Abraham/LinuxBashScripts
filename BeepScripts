@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Store the number of files in /root directory in a variable
+num_files=$(ls -1 /root | wc -l)
+
+while true; do
+  # Count the number of files in /root directory
+  new_num_files=$(ls -1 /root | wc -l)
+  
+  if [[ $new_num_files -gt $num_files ]]; then
+    # If a new file is created, beep and alert the user
+    echo -e "\aNew file created in /root directory!"
+    num_files=$new_num_files
+  fi
+  
+  # Wait for 10 seconds before checking again
+  sleep 10
+done
